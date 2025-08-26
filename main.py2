@@ -1,0 +1,44 @@
+import flet as ft
+from datetime import datetime
+
+tasks = []
+
+def main(page: ft.Page):
+    page.title = "Todo List"
+    page.theme_mode = ft.ThemeMode.LIGHT
+
+    task_list = ft.Column()
+    error_text = ft.Text("", color="red")  # текст для предупреждения
+
+    def update_task_list():
+        task_list.controls.clear()
+        for t in tasks:
+            task_list.controls.append(ft.Text(f"{t['text']}  ({t['date']})"))
+        page.update()
+
+    def add_task(e):
+        text = task_input.value.strip()
+        if not text:
+            error_text.value = "Введите текст задачи!"
+        elif len(text) > 100:
+            error_text.value = "Больше 100 символов нельзя!"
+        else:
+            date_created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            tasks.append({"text": text, "date": date_created})
+            task_input.value = ""
+            error_text.value = ""  # убираем предупреждение
+            update_task_list()
+        page.update()
+
+    task_input = ft.TextField(label="Введите задачу", width=300, on_submit=add_task)
+    add_button = ft.ElevatedButton("Добавить", on_click=add_task)
+
+    page.add(
+        ft.Column([
+            ft.Row([task_input, add_button], alignment=ft.MainAxisAlignment.CENTER),
+            error_text,  # показываем предупреждение прямо под полем
+            task_list
+        ], alignment=ft.MainAxisAlignment.CENTER)
+    )
+
+ft.app(target=main)
