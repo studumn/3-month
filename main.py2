@@ -8,7 +8,7 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.LIGHT
 
     task_list = ft.Column()
-    error_text = ft.Text("", color="red")  # текст для предупреждения
+    error_text = ft.Text("", color="red")  
 
     def update_task_list():
         task_list.controls.clear()
@@ -26,7 +26,7 @@ def main(page: ft.Page):
             date_created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             tasks.append({"text": text, "date": date_created})
             task_input.value = ""
-            error_text.value = ""  # убираем предупреждение
+            error_text.value = ""  
             update_task_list()
         page.update()
 
@@ -36,7 +36,7 @@ def main(page: ft.Page):
     page.add(
         ft.Column([
             ft.Row([task_input, add_button], alignment=ft.MainAxisAlignment.CENTER),
-            error_text,  # показываем предупреждение прямо под полем
+            error_text,  
             task_list
         ], alignment=ft.MainAxisAlignment.CENTER)
     )
